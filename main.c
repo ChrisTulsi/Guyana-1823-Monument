@@ -1,4 +1,3 @@
-
 #ifdef __APPLE_CC__
 #include <GLUT/glut.h>
 #else
@@ -7,7 +6,8 @@
 #include <math.h>
 #include <GL/glext.h>
 
-
+#include "skybox.h"
+#include "fence.h"
 
 void display();									//displays/ renders to screen
 void init();									//initalizes some values before start
@@ -15,7 +15,6 @@ void keyboard(unsigned char , int , int);		//handles keyboard characters
 void special(int , int , int);		//handles special keys
 void mouse(int , int , int , int);				//handles mouse
 void reshape();									//handles resizing of window
-void fence();
 void ground();
 void road();
 
@@ -26,7 +25,7 @@ float x = 0.0f, z = 20.0f;
 int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);											//initiates the glut library
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA |GL_MULTISAMPLE);	//RGB is used to use RGB framebuffers and doble means to use two buffers
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA ); //|GL_MULTISAMPLE);	//RGB is used to use RGB framebuffers and doble means to use two buffers
 	glutInitWindowPosition(100,100);								//window starting position
 	glutInitWindowSize(1200,700);									//window size width x height
 	glutCreateWindow("1823 Monument");										//create windows with title
@@ -47,7 +46,8 @@ void init(){
 	glShadeModel (GL_FLAT);							//set background color
   glEnable( GL_DEPTH_TEST );										//make 3D objects non transparent
 	//glEnable(GL_SMOOTH);
-	glEnable( GL_MULTISAMPLE );
+	//glEnable( GL_MULTISAMPLE );
+	load();
 }
 
 void display(){
@@ -58,7 +58,15 @@ void display(){
 	gluLookAt(x,3.0f,z,
 						x+lx,3.0f,z+lz,
 						0,1,0); // (eyex,eyey,eyez,eye center, eye center, eye center,up,up,up)
-   glxinfo();
+
+	//skybox
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(0.0,00,0.0);
+	glScalef (2.0, 2.0, 2.0);
+	SkyFrameWork();
+	glPopMatrix();
+
 	ground();
 	//left back fence
 	glPushMatrix();
@@ -71,20 +79,6 @@ void display(){
 	glPushMatrix();
 	glRotatef(180,0,1,0);
 	glTranslatef(0,0,22);
-	fence();
-	glPopMatrix();
-
-	//right back fence
-	glPushMatrix();
-	glRotatef(90,0,1,0);
-	glTranslatef(10,0,10);
-	fence();
-	glPopMatrix();
-
-	//right front fence
-	glPushMatrix();
-	glRotatef(90,0,1,0);
-	glTranslatef(-10,0,10);
 	fence();
 	glPopMatrix();
 
@@ -135,7 +129,7 @@ void reshape(int w, int h){
 	glViewport( 0, 0, w, h );
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	gluPerspective( 45, (float)w/h, 1, 200); //used with GL_PROJECTION
+	gluPerspective( 45, (float)w/h, 1, 2000); //used with GL_PROJECTION
   glMatrixMode( GL_MODELVIEW );
   glLoadIdentity();
   //glOrtho(20,20,20,20,10,100);
@@ -162,17 +156,17 @@ void keyboard(unsigned char key, int x, int y){
 
 void special(int key, int xx, int yy){
 
-	float fraction = 0.1f;
+	float fraction = 0.5f;
 
 	switch(key){
 
 		case GLUT_KEY_LEFT:
-							angle -= 0.01f;
+							angle -= 0.03f;
 							lx = sin(angle);
 							lz = -cos(angle);
 							break;
     case GLUT_KEY_RIGHT:
-							angle += 0.01f;
+							angle += 0.03f;
 							lx =sin(angle);
 							lz = -cos(angle);
     					break;
@@ -200,145 +194,6 @@ void mouse( int button, int state , int x , int y){
     						break;
     	default: return;
 	}
-}
-
-void fence(){
-
-	glColor3f(1.0, 1.0, 1.0);
-	glPushMatrix();
-	glScalef(0.9,4,0.1);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(1.5,0,0);
-	glScalef(0.9,4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(-1.5,0,0);
-	glScalef(0.9,4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(3,0,0);
-	glScalef(0.9,4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(-3,0,0);
-	glScalef(0.9,4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(4.5,0,0);
-	glScalef(0.9,4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(-4.5,0,0);
-	glScalef(0.9,4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(6,0,0);
-	glScalef(0.9,4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(-6,0,0);
-	glScalef(0.9,4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(7.5,0,0);
-	glScalef(0.9,4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(-7.5,0,0);
-	glScalef(0.9,4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(9,0,0);
-	glScalef(0.9,4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(-9,0,0);
-	glScalef(0.9,4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	//top rails
-	glPushMatrix();
-	glTranslatef(0,1,0.1);
-	glScalef(22,0.8,0.1);
-	glColor3f(1.0, 0.0, 0.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
-
-	//bottom rail
-	glPushMatrix();
-	glTranslatef(0, -1, 0.1);
-	glScalef(22,0.8,0.1);
-	glColor3f(1.0, 0.0, 0.0);
-	glutSolidCube(1);
-	glColor3f(0, 0, 0);
-	glutWireCube(1.001);
-	glPopMatrix();
 }
 
 void ground(){
