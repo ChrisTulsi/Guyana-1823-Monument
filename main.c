@@ -18,9 +18,9 @@ void reshape();									//handles resizing of window
 void ground();
 void road();
 
-float angle = 0.0f;
-float lx = 0.0f, lz = -1.0f;
-float x = 0.0f, z = 20.0f;
+float angle = 0.0f, angle1 = 0.0f;
+float lx = 0.0f, ly = 0.0f, lz = -1.0f;
+float x = 0.0f, y = 3.0f ,z = 20.0f ;
 
 int main(int argc, char *argv[])
 {
@@ -55,15 +55,15 @@ void display(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity(); //reset transformation
 	//set camera view
-	gluLookAt(x,3.0f,z,
-						x+lx,3.0f,z+lz,
+	gluLookAt(x,y,z,
+						x+lx,y+ly,z+lz,
 						0,1,0); // (eyex,eyey,eyez,eye center, eye center, eye center,up,up,up)
 
 	//skybox
 	glPushMatrix();
 	glColor3f(1,1,1);
 	glTranslatef(0.0,00,0.0);
-	glScalef (2.0, 2.0, 2.0);
+	glScalef (200.0, 200.0, 200.0);
 	SkyFrameWork();
 	glPopMatrix();
 
@@ -141,16 +141,24 @@ void keyboard(unsigned char key, int x, int y){
 
 	switch(key){
 
-		case 'W':
-							break;
-    	case 'A':
+			case 'w':	if(angle1 < 0.9){
+									angle1 += 0.03f;
+									ly = sin(angle1);
+								}
+								break;
+    	case 'a':
     						break;
-    	case 'S':
+
+			case 's': if(angle1 > -0.9){
+									angle1 -= 0.03f;
+									ly = sin(angle1);
+								}
     						break;
-    	case 'D':
+    	case 'd':
     						break;
     	default: return;
 	}
+	glutPostRedisplay();
 
 }
 
@@ -173,10 +181,12 @@ void special(int key, int xx, int yy){
     case GLUT_KEY_UP:
 							x += lx *fraction;
 							z += lz * fraction;
+							y += ly *fraction;
     					break;
     case GLUT_KEY_DOWN:
 							x -= lx *fraction;
 							z -= lz * fraction;
+							y -= ly *fraction;
 							break;
     default: return;
 	}
