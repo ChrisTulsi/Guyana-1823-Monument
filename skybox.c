@@ -12,7 +12,7 @@
 GLuint LoadTexture(const char * filename,int wrap, int width, int height)
 {
     GLuint texture;
-    unsigned char * data;
+    GLubyte * data;
     FILE * file;
 
     //Open the image file
@@ -24,7 +24,7 @@ GLuint LoadTexture(const char * filename,int wrap, int width, int height)
     }
 
     //Allocate space for data and read
-    data = (unsigned char *)malloc(width * height * 3);
+    data = (GLubyte *)malloc(width * height * 3);
     fread(data, width * height * 3, 1, file);
 
     //Close the file
@@ -37,8 +37,8 @@ GLuint LoadTexture(const char * filename,int wrap, int width, int height)
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR );
 
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE  );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP  );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap ? GL_REPEAT : GL_CLAMP_TO_EDGE );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap ? GL_REPEAT : GL_CLAMP_TO_EDGE );
 
     gluBuild2DMipmaps( GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data );
     free(data);
@@ -69,8 +69,8 @@ void SkyFrameWork(){
 	glBegin(GL_QUADS);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1, -1, 1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1, 1, 1);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, 1);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(1, -1, 1);
+			glTexCoord2f(0.018f, 1.0f); glVertex3f(1, 1, 1);
+			glTexCoord2f(0.018f, 0.018f); glVertex3f(1, -1, 1);
 	glEnd();
 
 	//FRONT
@@ -78,8 +78,8 @@ void SkyFrameWork(){
 	glBegin(GL_QUADS);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(1, -1, -1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, -1);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1, 1, -1);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1, -1, -1);
+			glTexCoord2f(0.018f, 1.0f); glVertex3f(-1, 1, -1);
+			glTexCoord2f(0.018f, 0.018f); glVertex3f(-1, -1, -1);
 	glEnd();
 
 	//BOTTOM
@@ -87,35 +87,35 @@ void SkyFrameWork(){
 	glBegin(GL_QUADS);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(1, -1, -1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(1, -1, 1);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1, -1, 1);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1, -1, -1);
+			glTexCoord2f(0.018f, 1.0f); glVertex3f(-1, -1, 1);
+			glTexCoord2f(0.018f, 0.018f); glVertex3f(-1, -1, -1);
 	glEnd();
 
 	//TOP
 	glBindTexture(GL_TEXTURE_2D, texture[5]);
 	glBegin(GL_QUADS);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1, 1, 1);
+			glTexCoord2f(0.018f, 0.018f); glVertex3f(-1, 1, 1);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1, 1, -1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, -1);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, 1);
+			glTexCoord2f(0.018f, 1.0f); glVertex3f(1, 1, 1);
 	glEnd();
 
 	//LEFT
 	glBindTexture(GL_TEXTURE_2D, texture[2]);
 	glBegin(GL_QUADS);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1, 1, -1);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1, 1, 1);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1, -1, 1);
+			glTexCoord2f(0.018f, 1.0f); glVertex3f(-1, 1, 1);
+			glTexCoord2f(0.018f, 0.018f); glVertex3f(-1, -1, 1);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1, -1, -1);
 	glEnd();
 
 	//RIGHT
 	glBindTexture(GL_TEXTURE_2D, texture[3]);
 	glBegin(GL_QUADS);
-			glTexCoord2f(0.0f, 0.0f); glVertex3f(1, -1, -1);
+			glTexCoord2f(0.018f, 0.018f); glVertex3f(1, -1, -1);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(1, -1, 1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, 1);
-			glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, -1);
+			glTexCoord2f(0.018f, 1.0f); glVertex3f(1, 1, -1);
 	glEnd();
 
 	glPopAttrib();
