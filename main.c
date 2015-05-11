@@ -8,6 +8,16 @@
 
 #include "skybox.h"
 #include "fence.h"
+#include "road.h"
+#include "ground.h"
+#include "stone.h"
+#include "stand.h"
+#include "platform.h"
+#include "walkway.h"
+#include "circleplatform.h"
+#include "bench.h"
+
+
 
 void display();									//displays/ renders to screen
 void init();									//initalizes some values before start
@@ -15,12 +25,13 @@ void keyboard(unsigned char , int , int);		//handles keyboard characters
 void special(int , int , int);		//handles special keys
 void mouse(int , int , int , int);				//handles mouse
 void reshape();									//handles resizing of window
-void ground();
-void road();
+
 
 float angle = 0.0f, angle1 = 0.0f;
 float lx = 0.0f, ly = 0.0f, lz = -1.0f;
 float x = 0.0f, y = 3.0f ,z = 20.0f ;
+
+int i;
 
 int main(int argc, char *argv[])
 {
@@ -44,10 +55,20 @@ void init(){
 
 	glClearColor(0,208,255, 0.0);
 	glShadeModel (GL_FLAT);							//set background color
-  glEnable( GL_DEPTH_TEST );										//make 3D objects non transparent
-	//glEnable(GL_SMOOTH);
-	//glEnable( GL_MULTISAMPLE );
-	load();
+  glEnable( GL_DEPTH_TEST );					//make 3D objects non transparent
+	glEnable(GL_POINT_SMOOTH | GL_LINE_SMOOTH | GL_SMOOTH);
+	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+	// glEnable( GL_MULTISAMPLE );
+
+	loadskyimage();
+	loadroadimage();
+	loadseawallimage();
+	loadgroundimage();
+	loadstoneimage();
+	loadplatformimage();
+	loadstandimage();
+	loadcircleplatformimage();
+	loadbenchimage();
 }
 
 void display(){
@@ -62,12 +83,33 @@ void display(){
 	//skybox
 	glPushMatrix();
 	glColor3f(1,1,1);
-	glTranslatef(0.0,00,0.0);
-	glScalef (200.0, 200.0, 200.0);
+	glScalef (2000.0, 2000.0, 2000.0);
 	SkyFrameWork();
 	glPopMatrix();
 
+	//ground
+	glPushMatrix();
+	glColor3f(1,1,1);
 	ground();
+	glPopMatrix();
+
+	//platform
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glScalef (30.0, 1.0, 30.0);
+	glTranslatef(0,-5.0,0);
+	platform();
+	glPopMatrix();
+
+	//platform
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glScalef(30.0, 1.0, 10.0);
+	glTranslatef(2.0,-5.0,0);
+	platform();
+	glPopMatrix();
+
+
 	//left back fence
 	glPushMatrix();
 	glRotatef(-90,0,1,0);
@@ -89,37 +131,78 @@ void display(){
 	fence();
 	glPopMatrix();
 
+	//road
 	glPushMatrix();
-	glColor3f(0.8,0.8,0);
-	glScalef(10,10,10);
-	//glTranslatef(10,0,0);
-	glutSolidCube(1);
-	glPopMatrix();
-
-	glPushMatrix();
-	glColor3f(0,1,0);
-	glScalef(10,10,1000);
-	glTranslatef(10,0,0);
-	glutSolidCube(1);
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(-30,0,0);
+	glColor3f(1,1,1);
+	glTranslatef(100,-5,0);
 	road();
 	glPopMatrix();
 
+	//road
 	glPushMatrix();
-	glTranslatef(40,0,0);
+	glColor3f(1,1,1);
+	glTranslatef(-60,-5,0);
 	road();
 	glPopMatrix();
-
 
 	//seawall
 	glPushMatrix();
-	glColor3f(0,1,0);
-	glScalef(10,10,1000);
-	glTranslatef(10,0,0);
+	glColor3f(1,1,1);
+	glTranslatef(130,0,0);
+	seawall();
+	glPopMatrix();
+
+	//stand
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glRotatef(180,0,1,0);
+	glScalef(4,4,4);
+	glTranslatef(0,0.8,0);
+	stand();
+	glPopMatrix();
+
+	//stone
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glScalef(7,0.5,7);
+	glTranslatef(0,-2,0);
+	stone();
 	glutSolidCube(1);
+	glPopMatrix();
+
+
+	//circleplatform
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glScalef(2,1,2);
+	glRotatef(90,1,0,0);
+	//glTranslatef(0,10,0);
+	circleplatform();
+	glPopMatrix();
+
+	//walkway
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(35,-5,11);
+	glScalef(1,2,1);
+	walkway();
+	glPopMatrix();
+
+	//walkway
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glRotatef(180,0,1,0);
+	glTranslatef(-75,-5,11);
+	glScalef(1,2,1);
+	walkway();
+	glPopMatrix();
+
+	//bench
+	glPushMatrix();
+	glColor3f(1,1,1);
+	//glRotatef(180,0,1,0);
+	glTranslatef(-50,0,0);
+	bench();
 	glPopMatrix();
 
 	glutSwapBuffers();
@@ -129,7 +212,7 @@ void reshape(int w, int h){
 	glViewport( 0, 0, w, h );
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	gluPerspective( 45, (float)w/h, 1, 2000); //used with GL_PROJECTION
+	gluPerspective( 45, (float)w/h, 1, 5000); //used with GL_PROJECTION
   glMatrixMode( GL_MODELVIEW );
   glLoadIdentity();
   //glOrtho(20,20,20,20,10,100);
@@ -141,7 +224,7 @@ void keyboard(unsigned char key, int x, int y){
 
 	switch(key){
 
-			case 'w':	if(angle1 < 0.9){
+			case 'w':	if(angle1 < 1.6){
 									angle1 += 0.03f;
 									ly = sin(angle1);
 								}
@@ -149,13 +232,14 @@ void keyboard(unsigned char key, int x, int y){
     	case 'a':
     						break;
 
-			case 's': if(angle1 > -0.9){
+			case 's': if(angle1 > -1.6){
 									angle1 -= 0.03f;
 									ly = sin(angle1);
 								}
     						break;
     	case 'd':
     						break;
+
     	default: return;
 	}
 	glutPostRedisplay();
@@ -206,22 +290,12 @@ void mouse( int button, int state , int x , int y){
 	}
 }
 
-void ground(){
-	glPushMatrix();
-	glColor3f(0.9,0.9,0.9);
-	glTranslatef(0,-4,0);
-	glScalef(1000,0,1000);
-	glutSolidCube(1);
-	glPopMatrix();
-
-}
-
-void road(){
-
-	glPushMatrix();
-	glColor3f(0.5,0.5,0.5);
-	glScalef(10,0,1000);
-	glutSolidCube(1);
-	glPopMatrix();
-
-}
+// void ground(){
+// 	glPushMatrix();
+// 	glColor3f(0.9,0.9,0.9);
+// 	glTranslatef(0,-4,0);
+// 	glScalef(2000,0,2000);
+// 	glutSolidCube(1);
+// 	glPopMatrix();
+//
+// }

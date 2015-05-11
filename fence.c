@@ -3,6 +3,8 @@
 #else
 #include <GL/glut.h>
 #endif
+#include "fence.h"
+#include "picket.h"
 
 void fence(){
 
@@ -10,6 +12,7 @@ void fence(){
 	glPushMatrix();
 	glScalef(0.9,4,0.1);
 	glutSolidCube(1);
+	//picket();
 	glColor3f(0, 0, 0);
 	glutWireCube(1.001);
 	glPopMatrix();
@@ -19,6 +22,7 @@ void fence(){
 	glScalef(0.9,4,0.1);
 	glColor3f(1.0, 1.0, 1.0);
 	glutSolidCube(1);
+	//picket();
 	glColor3f(0, 0, 0);
 	glutWireCube(1.001);
 	glPopMatrix();

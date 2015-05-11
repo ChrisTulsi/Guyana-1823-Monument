@@ -1,5 +1,4 @@
-GLuint texture[6];
+GLuint skytexture[6];
 
-GLuint LoadTexture(const char* , int , int , int );
-void load();
+void loadskyimage();
 void SkyFrameWork();
