@@ -16,6 +16,8 @@
 #include "walkway.h"
 #include "circleplatform.h"
 #include "bench.h"
+#include "tile.h"
+#include "guardhut.h"
 
 
 
@@ -36,7 +38,7 @@ int i;
 int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);											//initiates the glut library
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA ); //|GL_MULTISAMPLE);	//RGB is used to use RGB framebuffers and doble means to use two buffers
+	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL ); //|GL_MULTISAMPLE);	//RGB is used to use RGB framebuffers and doble means to use two buffers
 	glutInitWindowPosition(100,100);								//window starting position
 	glutInitWindowSize(1200,700);									//window size width x height
 	glutCreateWindow("1823 Monument");										//create windows with title
@@ -53,12 +55,18 @@ int main(int argc, char *argv[])
 
 void init(){
 
-	glClearColor(0,208,255, 0.0);
-	glShadeModel (GL_FLAT);							//set background color
+	glShadeModel (GL_SMOOTH);							//set background color
   glEnable( GL_DEPTH_TEST );					//make 3D objects non transparent
 	glEnable(GL_POINT_SMOOTH | GL_LINE_SMOOTH | GL_SMOOTH);
 	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
-	// glEnable( GL_MULTISAMPLE );
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_NORMALIZE);
+
+	glEnable(GL_FOG);
+	glHint (GL_FOG_HINT, GL_NICEST);
+	glClearColor(0.5f,0.5f,0.5f,1);
 
 	loadskyimage();
 	loadroadimage();
@@ -69,21 +77,41 @@ void init(){
 	loadstandimage();
 	loadcircleplatformimage();
 	loadbenchimage();
+	loadfenceimage();
+	loadtileimage();
+	loadguardhutimage();
 }
 
 void display(){
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glLoadIdentity(); //reset transformation
 	//set camera view
 	gluLookAt(x,y,z,
 						x+lx,y+ly,z+lz,
 						0,1,0); // (eyex,eyey,eyez,eye center, eye center, eye center,up,up,up)
 
+	//LIGHTING
+	GLfloat ambientColor[] = {3.0f, 3.0f, 3.0f, 1.0f};
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+
+	//add positioned lighting
+	GLfloat lightColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	GLfloat lightPosition[] = { -1100.0f, 1100.0f, -900.0f, 1.0f};
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
+	glLightfv(GL_LIGHT0, GL_POSITION,lightPosition);
+
+	//Fogging
+	GLfloat fogColor[] = { 0.5f, 0.5f, 0.5f ,0.1 };
+	glFogfv(GL_FOG_COLOR, fogColor);
+	glFogi(GL_FOG_MODE, GL_LINEAR);
+	glFogf(GL_FOG_START, 10.0f);
+	glFogf(GL_FOG_END, 2000.0f);
+
 	//skybox
 	glPushMatrix();
 	glColor3f(1,1,1);
-	glScalef (2000.0, 2000.0, 2000.0);
+	glScalef (1000.0, 1000.0, 1000.0);
 	SkyFrameWork();
 	glPopMatrix();
 
@@ -96,59 +124,109 @@ void display(){
 	//platform
 	glPushMatrix();
 	glColor3f(1,1,1);
-	glScalef (30.0, 1.0, 30.0);
+	glScalef (50.0, 1.0, 50.0);
 	glTranslatef(0,-5.0,0);
 	platform();
 	glPopMatrix();
 
-	//platform
+	//walkway platform
 	glPushMatrix();
 	glColor3f(1,1,1);
 	glScalef(30.0, 1.0, 10.0);
-	glTranslatef(2.0,-5.0,0);
+	glTranslatef(2.665,-5.0,0);
 	platform();
 	glPopMatrix();
 
-
-	//left back fence
+	//tile
 	glPushMatrix();
-	glRotatef(-90,0,1,0);
-	glTranslatef(-10,0,10);
-	fence();
+	glColor3f(1,1,1);
+	glScalef(1.0, 1.0, 1.0);
+	glTranslatef(0,-3,0);
+	glRotatef(90,1, 0, 0);
+	tile();
 	glPopMatrix();
 
-	//back fence
+	//front fence
 	glPushMatrix();
 	glRotatef(180,0,1,0);
-	glTranslatef(0,0,22);
+	glTranslatef(41,-1,50);
 	fence();
 	glPopMatrix();
 
-	//left front fence
+	glPushMatrix();
+	glRotatef(180,0,1,0);
+	glTranslatef(22,-1,50);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(180,0,1,0);
+	glTranslatef(3,-1,50);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(180,0,1,0);
+	glTranslatef(-16,-1,50);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(180,0,1,0);
+	glTranslatef(-35,-1,50);
+	fence();
+	glPopMatrix();
+
+
+	//left fence
 	glPushMatrix();
 	glRotatef(-90,0,1,0);
-	glTranslatef(10,0,10);
+	glTranslatef(-39,-1,50);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(-90,0,1,0);
+	glTranslatef(-20,-1,50);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(-90,0,1,0);
+	glTranslatef(-1,-1,50);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(-90,0,1,0);
+	glTranslatef(18,-1,50);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(-90,0,1,0);
+	glTranslatef(37,-1,50);
 	fence();
 	glPopMatrix();
 
 	//road
 	glPushMatrix();
 	glColor3f(1,1,1);
-	glTranslatef(100,-5,0);
+	glTranslatef(120,-5,0);
 	road();
 	glPopMatrix();
 
 	//road
 	glPushMatrix();
 	glColor3f(1,1,1);
-	glTranslatef(-60,-5,0);
+	glTranslatef(-100,-5,0);
 	road();
 	glPopMatrix();
 
 	//seawall
 	glPushMatrix();
 	glColor3f(1,1,1);
-	glTranslatef(130,0,0);
+	glTranslatef(150,0,0);
 	seawall();
 	glPopMatrix();
 
@@ -165,34 +243,33 @@ void display(){
 	glPushMatrix();
 	glColor3f(1,1,1);
 	glScalef(7,0.5,7);
-	glTranslatef(0,-2,0);
+	glTranslatef(0,-2.5,0);
 	stone();
 	glutSolidCube(1);
 	glPopMatrix();
-
 
 	//circleplatform
 	glPushMatrix();
 	glColor3f(1,1,1);
 	glScalef(2,1,2);
+	glTranslatef(0,-1.8,0);
 	glRotatef(90,1,0,0);
-	//glTranslatef(0,10,0);
 	circleplatform();
 	glPopMatrix();
 
-	//walkway
+	//walkway stone
 	glPushMatrix();
 	glColor3f(1,1,1);
-	glTranslatef(35,-5,11);
+	glTranslatef(55,-5,11);
 	glScalef(1,2,1);
 	walkway();
 	glPopMatrix();
 
-	//walkway
+	//walkway stone
 	glPushMatrix();
 	glColor3f(1,1,1);
 	glRotatef(180,0,1,0);
-	glTranslatef(-75,-5,11);
+	glTranslatef(-95,-5,11);
 	glScalef(1,2,1);
 	walkway();
 	glPopMatrix();
@@ -200,9 +277,24 @@ void display(){
 	//bench
 	glPushMatrix();
 	glColor3f(1,1,1);
-	//glRotatef(180,0,1,0);
-	glTranslatef(-50,0,0);
+	glTranslatef(-40,-2,0);
+	glRotatef(90,0,1,0);
 	bench();
+	glPopMatrix();
+
+	//bench
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(40,-2,0);
+	glRotatef(90,0,1,0);
+	bench();
+	glPopMatrix();
+
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glScalef(5,5,5);
+	glTranslatef(20,0,-8);
+	guardhut();
 	glPopMatrix();
 
 	glutSwapBuffers();

@@ -23,7 +23,9 @@ void stone(){
 
 	// Bind the BACK texture of the sky map to the BACK side of the cube
 	glBindTexture(GL_TEXTURE_2D, stonetexture);
+
 	glBegin(GL_QUADS);
+			glNormal3f(0,0,1);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1, -1, 1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1, 1, 1);
 			glTexCoord2f(0.018f, 1.0f); glVertex3f(1, 1, 1);
@@ -33,6 +35,7 @@ void stone(){
 	//FRONT
 	glBindTexture(GL_TEXTURE_2D, stonetexture);
 	glBegin(GL_QUADS);
+	glNormal3f(0,0,-1);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(1, -1, -1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, -1);
 			glTexCoord2f(0.018f, 1.0f); glVertex3f(-1, 1, -1);
@@ -42,6 +45,7 @@ void stone(){
 	//BOTTOM
 	glBindTexture(GL_TEXTURE_2D, stonetexture);
 	glBegin(GL_QUADS);
+	    glNormal3f(0,-1,0);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(1, -1, -1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(1, -1, 1);
 			glTexCoord2f(0.018f, 1.0f); glVertex3f(-1, -1, 1);
@@ -51,6 +55,7 @@ void stone(){
 	//TOP
 	glBindTexture(GL_TEXTURE_2D, stonetexture);
 	glBegin(GL_QUADS);
+	    glNormal3f(0,1,0);
 			glTexCoord2f(0.018f, 0.018f); glVertex3f(-1, 1, 1);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1, 1, -1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, -1);
@@ -60,6 +65,7 @@ void stone(){
 	//LEFT
 	glBindTexture(GL_TEXTURE_2D, stonetexture);
 	glBegin(GL_QUADS);
+			glNormal3f(-1,0,0);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1, 1, -1);
 			glTexCoord2f(0.018f, 1.0f); glVertex3f(-1, 1, 1);
 			glTexCoord2f(0.018f, 0.018f); glVertex3f(-1, -1, 1);
@@ -69,6 +75,7 @@ void stone(){
 	//RIGHT
 	glBindTexture(GL_TEXTURE_2D, stonetexture);
 	glBegin(GL_QUADS);
+			glNormal3f(1,0,0);
 			glTexCoord2f(0.018f, 0.018f); glVertex3f(1, -1, -1);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(1, -1, 1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, 1);

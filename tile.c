@@ -7,24 +7,25 @@
 #include <GL/glext.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "circleplatform.h"
+#include "tile.h"
 #include "texture.h"
 
-void loadcircleplatformimage(){
+void loadtileimage(){
 
-  circleplatformtexture = LoadTexture("/home/chris/Desktop/concrete.bmp", 0, 2048, 2048);  //BACK
+  tiletexture = LoadTexture("/home/chris/Desktop/tile.bmp", 1, 2048, 2048);  //BACK
 }
 
-void circleplatform(){
+void tile(){
 
 	// Enable/Disable features
 	glPushAttrib(GL_ENABLE_BIT);
 	glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, tiletexture);
   GLUquadricObj *quadratic;
   quadratic=gluNewQuadric();			// Create A Pointer To The Quadric Object ( NEW )
   gluQuadricNormals(quadratic, GLU_SMOOTH);	// Create Smooth Normals ( NEW )
   gluQuadricTexture(quadratic, GL_TRUE);		// Create Texture Coords ( NEW )
-  gluCylinder(quadratic/*quad*/,3/*base*/,7.0/*top*/,2.0/*height*/,60 /*slices*/,1/*stacks*/);
+  gluCylinder(quadratic/*quad*/,1.0/*base*/,20.0/*top*/,0.5/*height*/,100 /*slices*/,1/*stacks*/);
 
   glTranslatef(0.0,0.0,3.5);
   GLUquadricObj *quadraticBase;

@@ -30,6 +30,7 @@ void seawall(){
 	// Bind the BACK texture of the sky map to the BACK side of the cube
 	glBindTexture(GL_TEXTURE_2D, walltexture[0]);
 	glBegin(GL_QUADS);
+			glNormal3f(0,0,1);
 			glTexCoord2f(500.0f, 0.0f); glVertex3f(-5, -5, 1000);
 			glTexCoord2f(500.0f, 10.0f); glVertex3f(-5, 5, 1000);
 			glTexCoord2f(0.0f, 10.0f); glVertex3f(5, 5, 1000);
@@ -39,6 +40,7 @@ void seawall(){
 	//FRONT
 	glBindTexture(GL_TEXTURE_2D, walltexture[1]);
 	glBegin(GL_QUADS);
+			glNormal3f(0,0,-1);
 			glTexCoord2f(500.0f, 0.0f); glVertex3f(5, -5, -1000);
 			glTexCoord2f(500.0f, 10.0f); glVertex3f(5, 5, -1000);
 			glTexCoord2f(0.0f, 10.0f); glVertex3f(-5, 5, -1000);
@@ -48,6 +50,7 @@ void seawall(){
 	//BOTTOM
 	glBindTexture(GL_TEXTURE_2D, walltexture[4]);
 	glBegin(GL_QUADS);
+			glNormal3f(0,-1,0);
 			glTexCoord2f(500.0f, 0.0f); glVertex3f(5, -5, -1000);
 			glTexCoord2f(500.0f, 10.0f); glVertex3f(5, -5, 1000);
 			glTexCoord2f(0.0f, 10.0f); glVertex3f(-5, -5, 1000);
@@ -57,6 +60,7 @@ void seawall(){
 	//TOP
 	glBindTexture(GL_TEXTURE_2D, walltexture[5]);
 	glBegin(GL_QUADS);
+			glNormal3f(0,1,0);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(-5, 5, 1000);
 			glTexCoord2f(500.0f, 0.0f); glVertex3f(-5, 5, -1000);
 			glTexCoord2f(500.0f, 10.0f); glVertex3f(5, 5, -1000);
@@ -66,6 +70,7 @@ void seawall(){
 	//LEFT
 	glBindTexture(GL_TEXTURE_2D, walltexture[2]);
 	glBegin(GL_QUADS);
+			glNormal3f(-1,0,0);
 			glTexCoord2f(500.0f, 10.0f); glVertex3f(-5, 5, -1000);
 			glTexCoord2f(0.0f, 10.0f); glVertex3f(-5, 5, 1000);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(-5, -5, 1000);
@@ -75,6 +80,7 @@ void seawall(){
 	//RIGHT
 	glBindTexture(GL_TEXTURE_2D, walltexture[3]);
 	glBegin(GL_QUADS);
+			glNormal3f(1,0,0);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(5, -5, -1000);
 			glTexCoord2f(500.0f, 0.0f); glVertex3f(5, -5, 1000);
 			glTexCoord2f(500.0f, 10.0f); glVertex3f(5, 5, 1000);
