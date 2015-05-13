@@ -18,6 +18,7 @@
 #include "bench.h"
 #include "tile.h"
 #include "guardhut.h"
+#include "sign.h"
 
 
 
@@ -80,6 +81,7 @@ void init(){
 	loadfenceimage();
 	loadtileimage();
 	loadguardhutimage();
+	loadsignimage();
 }
 
 void display(){
@@ -92,12 +94,12 @@ void display(){
 						0,1,0); // (eyex,eyey,eyez,eye center, eye center, eye center,up,up,up)
 
 	//LIGHTING
-	GLfloat ambientColor[] = {3.0f, 3.0f, 3.0f, 1.0f};
+	GLfloat ambientColor[] = {3.5f, 3.5f, 3.5f, 1.0f};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
 
 	//add positioned lighting
 	GLfloat lightColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-	GLfloat lightPosition[] = { -1100.0f, 1100.0f, -900.0f, 1.0f};
+	GLfloat lightPosition[] = { -1100.0f, 1100.0f, -700.0f, 1.0f};
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
 	glLightfv(GL_LIGHT0, GL_POSITION,lightPosition);
 
@@ -105,7 +107,7 @@ void display(){
 	GLfloat fogColor[] = { 0.5f, 0.5f, 0.5f ,0.1 };
 	glFogfv(GL_FOG_COLOR, fogColor);
 	glFogi(GL_FOG_MODE, GL_LINEAR);
-	glFogf(GL_FOG_START, 10.0f);
+	glFogf(GL_FOG_START, 30.0f);
 	glFogf(GL_FOG_END, 2000.0f);
 
 	//skybox
@@ -209,6 +211,45 @@ void display(){
 	fence();
 	glPopMatrix();
 
+	glPushMatrix();
+	glRotatef(-90,0,1,0);
+	glTranslatef(56,-1,50);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(-90,0,1,0);
+	glTranslatef(75,-1,50);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotatef(-90,0,1,0);
+	glTranslatef(94,-1,50);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-38.5,-1,102.5);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-19.5,-1,102.5);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0.5,-1,102.5);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(18.5,-1,102.5);
+	fence();
+	glPopMatrix();
+
+
 	//road
 	glPushMatrix();
 	glColor3f(1,1,1);
@@ -290,11 +331,35 @@ void display(){
 	bench();
 	glPopMatrix();
 
+	//bench
 	glPushMatrix();
 	glColor3f(1,1,1);
-	glScalef(5,5,5);
-	glTranslatef(20,0,-8);
+	glTranslatef(35,-2,20);
+	glRotatef(45,0,1,0);
+	bench();
+	glPopMatrix();
+
+	//bench
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(35,-2,-20);
+	glRotatef(-45,0,1,0);
+	bench();
+	glPopMatrix();
+
+	//guardhut
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glScalef(6,5,6);
+	glTranslatef(16,0,-8);
 	guardhut();
+	glPopMatrix();
+
+	//sign
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(60,0,20);
+	sign();
 	glPopMatrix();
 
 	glutSwapBuffers();
@@ -381,13 +446,3 @@ void mouse( int button, int state , int x , int y){
     	default: return;
 	}
 }
-
-// void ground(){
-// 	glPushMatrix();
-// 	glColor3f(0.9,0.9,0.9);
-// 	glTranslatef(0,-4,0);
-// 	glScalef(2000,0,2000);
-// 	glutSolidCube(1);
-// 	glPopMatrix();
-//
-// }

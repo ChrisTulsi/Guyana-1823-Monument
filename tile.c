@@ -12,7 +12,7 @@
 
 void loadtileimage(){
 
-  tiletexture = LoadTexture("/home/chris/Desktop/tile.bmp", 1, 2048, 2048);  //BACK
+  tiletexture = LoadTexture("/home/chris/Desktop/images/tile.bmp", 1, 2048, 2048);  //BACK
 }
 
 void tile(){

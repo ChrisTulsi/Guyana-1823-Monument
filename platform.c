@@ -12,7 +12,7 @@
 
 void loadplatformimage(){
 
-	platformtexture = LoadTexture("/home/chris/Desktop/concrete.bmp", 0, 2048, 2048);  //BACK
+	platformtexture = LoadTexture("/home/chris/Desktop/images/concrete.bmp", 0, 2048, 2048);  //BACK
 }
 
 void platform(){

@@ -12,7 +12,7 @@
 
 void loadcircleplatformimage(){
 
-  circleplatformtexture = LoadTexture("/home/chris/Desktop/concrete.bmp", 0, 2048, 2048);  //BACK
+  circleplatformtexture = LoadTexture("/home/chris/Desktop/images/concrete.bmp", 0, 2048, 2048);  //BACK
 }
 
 void circleplatform(){

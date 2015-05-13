@@ -12,7 +12,7 @@
 
 void loadbenchimage(){
 
-  benchtexture = LoadTexture("/home/chris/Desktop/whitepaint.bmp", 0, 2048, 2048);  //BACK
+  benchtexture = LoadTexture("/home/chris/Desktop/images/whitepaint.bmp", 0, 2048, 2048);  //BACK
 }
 
 void benchcube(){

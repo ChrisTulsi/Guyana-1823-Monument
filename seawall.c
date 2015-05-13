@@ -12,12 +12,12 @@
 
 void loadseawallimage(){
 
-	walltexture[0] = LoadTexture("/home/chris/Desktop/seawall.bmp", 1, 2048, 2048);  //BACK
-  walltexture[1] = LoadTexture("/home/chris/Desktop/seawall.bmp", 1, 2048, 2048); //FRONT
-  walltexture[2] = LoadTexture("/home/chris/Desktop/seawall.bmp", 1, 2048, 2048);  //RIGHT
-  walltexture[3] = LoadTexture("/home/chris/Desktop/seawall.bmp", 1, 2048, 2048); //LEFT
-  walltexture[4] = LoadTexture("/home/chris/Desktop/seawall.bmp", 1, 2048, 2048);  //DOWN
-  walltexture[5] = LoadTexture("/home/chris/Desktop/seawall.bmp", 1, 2048, 2048);    //UP
+	walltexture[0] = LoadTexture("/home/chris/Desktop/images/seawall.bmp", 1, 2048, 2048);  //BACK
+  walltexture[1] = LoadTexture("/home/chris/Desktop/images/seawall.bmp", 1, 2048, 2048); //FRONT
+  walltexture[2] = LoadTexture("/home/chris/Desktop/images/seawall.bmp", 1, 2048, 2048);  //RIGHT
+  walltexture[3] = LoadTexture("/home/chris/Desktop/images/seawall.bmp", 1, 2048, 2048); //LEFT
+  walltexture[4] = LoadTexture("/home/chris/Desktop/images/seawall.bmp", 1, 2048, 2048);  //DOWN
+  walltexture[5] = LoadTexture("/home/chris/Desktop/images/seawall.bmp", 1, 2048, 2048);    //UP
 
 }
 

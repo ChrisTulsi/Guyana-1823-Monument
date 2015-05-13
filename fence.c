@@ -7,7 +7,7 @@
 
 void loadfenceimage(){
 
-	fencetexture = LoadTexture("/home/chris/Desktop/whitepaint.bmp", 0, 2048, 2048);
+	fencetexture = LoadTexture("/home/chris/Desktop/images/whitepaint.bmp", 0, 2048, 2048);
 }
 
 void fence(){

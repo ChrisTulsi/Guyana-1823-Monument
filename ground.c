@@ -11,7 +11,7 @@
 #include "texture.h"
 
 void loadgroundimage(){
-	groundtexture = LoadTexture("/home/chris/Desktop/grass.bmp", 1, 2048, 2048);  //BACK
+	groundtexture = LoadTexture("/home/chris/Desktop/images/grass.bmp", 1, 2048, 2048);  //BACK
 }
 
 void ground(){

@@ -11,7 +11,7 @@
 #include "texture.h"
 
 void loadroadimage(){
-	roadtexture = LoadTexture("/home/chris/Desktop/asphalt.bmp", 1, 2048, 2048);  //BACK
+	roadtexture = LoadTexture("/home/chris/Desktop/images/asphalt.bmp", 1, 2048, 2048);  //BACK
 }
 
 void road(){
