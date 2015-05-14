@@ -35,14 +35,16 @@ float lx = 0.0f, ly = 0.0f, lz = -1.0f;
 float x = 0.0f, y = 3.0f ,z = 20.0f ;
 
 int i;
+static int window;
 
 int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);											//initiates the glut library
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL ); //|GL_MULTISAMPLE);	//RGB is used to use RGB framebuffers and doble means to use two buffers
-	glutInitWindowPosition(100,100);								//window starting position
+	glutInitWindowPosition(100,100);							//window starting position
 	glutInitWindowSize(1200,700);									//window size width x height
-	glutCreateWindow("1823 Monument");										//create windows with title
+	window = glutCreateWindow("1823 Monument");										//create windows with title
+	glutFullScreen();
 
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
@@ -59,14 +61,30 @@ void init(){
 	glShadeModel (GL_SMOOTH);							//set background color
   glEnable( GL_DEPTH_TEST );					//make 3D objects non transparent
 	glEnable(GL_POINT_SMOOTH | GL_LINE_SMOOTH | GL_SMOOTH);
-	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 
+	glEnable(GL_FOG); //fogging
+
+	// alphableding
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+	//enable lighting
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_NORMALIZE);
 
-	glEnable(GL_FOG);
+	//anti alisising
+	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glHint(GL_TEXTURE_COMPRESSION_HINT, GL_NICEST);
+	glHint(GL_GENERATE_MIPMAP_HINT, GL_NICEST);
+	glHint(GL_FRAGMENT_SHADER_DERIVATIVE_HINT, GL_NICEST);
 	glHint (GL_FOG_HINT, GL_NICEST);
+
+
+
 	glClearColor(0.5f,0.5f,0.5f,1);
 
 	loadskyimage();
@@ -107,7 +125,7 @@ void display(){
 	GLfloat fogColor[] = { 0.5f, 0.5f, 0.5f ,0.1 };
 	glFogfv(GL_FOG_COLOR, fogColor);
 	glFogi(GL_FOG_MODE, GL_LINEAR);
-	glFogf(GL_FOG_START, 30.0f);
+	glFogf(GL_FOG_START, 10.0f);
 	glFogf(GL_FOG_END, 2000.0f);
 
 	//skybox
@@ -396,6 +414,9 @@ void keyboard(unsigned char key, int x, int y){
     						break;
     	case 'd':
     						break;
+			case 27:	glutDestroyWindow(window);
+								exit(0);
+								break;
 
     	default: return;
 	}
