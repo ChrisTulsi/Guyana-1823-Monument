@@ -13,7 +13,6 @@ void loadfenceimage(){
 
 void fence(){
 
-	glColor3f(1.0, 1.0, 1.0);
 	glPushMatrix();
 	glScalef(0.4,3,0.1);
 	picket();
@@ -22,119 +21,102 @@ void fence(){
 	glPushMatrix();
 	glTranslatef(1,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-1,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(2,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-2,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(3,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-3,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(4,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-4,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(5,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-5,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(6,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-6,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(7,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-7,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-8,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-9,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-10,0,0);
 	glScalef(0.4,3,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
@@ -142,7 +124,6 @@ void fence(){
 	glPushMatrix();
 	glTranslatef(8,0,-0.4);
 	glScalef(0.4,3,0.4);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
@@ -150,7 +131,6 @@ void fence(){
 	glPushMatrix();
 	glTranslatef(-1.5,1,0.1);
 	glScalef(10,0.4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 
@@ -158,7 +138,6 @@ void fence(){
 	glPushMatrix();
 	glTranslatef(-1.5, -1, 0.1);
 	glScalef(10,0.4,0.1);
-	glColor3f(1.0, 1.0, 1.0);
 	picket();
 	glPopMatrix();
 }

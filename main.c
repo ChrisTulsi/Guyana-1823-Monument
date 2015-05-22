@@ -20,6 +20,8 @@
 #include "tile.h"
 #include "guardhut.h"
 #include "sign.h"
+#include "pedestal.h"
+#include "water.h"
 
 
 void display();									//displays/ renders to screen
@@ -96,6 +98,7 @@ void init(){
 	glShadeModel (GL_SMOOTH);							//set background color
   glEnable( GL_DEPTH_TEST );					//make 3D objects non transparent
 	glEnable(GL_POINT_SMOOTH | GL_LINE_SMOOTH | GL_SMOOTH);
+  //glEnable(GL_COLOR_MATERIAL);
 
 	glEnable(GL_FOG); //fogging
 
@@ -104,9 +107,9 @@ void init(){
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
 	//enable lighting
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_NORMALIZE);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+  glEnable(GL_NORMALIZE);
 
 	//anti alisising
 	glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
@@ -118,7 +121,7 @@ void init(){
 	glHint(GL_FRAGMENT_SHADER_DERIVATIVE_HINT, GL_NICEST);
 	glHint (GL_FOG_HINT, GL_NICEST);
 
-	glClearColor(0.0f,0.0f,0.0f,1);
+	glClearColor(0.0f,0.0f,0.0f,1.0f);
 
 	loadskyimage();
 	loadroadimage();
@@ -133,6 +136,8 @@ void init(){
 	loadtileimage();
 	loadguardhutimage();
 	loadsignimage();
+  loadpedestalimage();
+  loadwaterimage();
 }
 
 void display(){
@@ -146,45 +151,355 @@ void display(){
 						x+lx,y+ly,z+lz,
 						0,1,0); // (eyex,eyey,eyez,eye center, eye center, eye center,up,up,up)
 
+  // LIGHTING
+  GLfloat ambientColor[] = {3.5f, 3.5f, 3.5f, 1.0f};
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+
+  //add positioned lighting
+  GLfloat lightColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
+  glLightfv(GL_LIGHT0, GL_POSITION,lightPosition);
+
+  //Fogging
+  GLfloat fogColor[] = { 0.5f, 0.5f, 0.5f ,0.1 };
+  glFogfv(GL_FOG_COLOR, fogColor);
+  glFogi(GL_FOG_MODE, GL_LINEAR);
+  glFogf(GL_FOG_START, 10.0f);
+  glFogf(GL_FOG_END, 1800.0f);
+
+	//skybox
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glScalef (1000.0, 1000.0, 1000.0);
+	SkyFrameWork();
+	glPopMatrix();
+
+	//ground
+	glPushMatrix();
+	glColor3f(1,1,1);
+	ground();
+	glPopMatrix();
+
+  //loadwaterimage
+	glPushMatrix();
+	glColor3f(1,1,1);
+  glTranslatef(1140,0.0,0);
+	water();
+	glPopMatrix();
+
+	//platform
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(0,-4.0,0);
+  glScalef (50.0, 1.0, 50.0);
+	platform();
+	glPopMatrix();
+
+  //pave
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(130,-4.0,0);
+  glScalef (5.0, 1.0, 1000.0);
+	platform();
+	glPopMatrix();
+
+	//walkway platform
+	glPushMatrix();
+	glColor3f(1,1,1);
+  glTranslatef(80,-4.0,0);
+	glScalef(30.0, 1.0, 10.0);
+	platform();
+	glPopMatrix();
+
+	//front fence
+	glPushMatrix();
+  glTranslatef(-41,0,-50);
+	glRotatef(180,0,1,0);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+  glTranslatef(-22,0,-50);
+	glRotatef(180,0,1,0);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+  glTranslatef(-3,0,-50);
+	glRotatef(180,0,1,0);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+  glTranslatef(16,0,-50);
+	glRotatef(180,0,1,0);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+  glTranslatef(35,0,-50);
+	glRotatef(180,0,1,0);
+	fence();
+	glPopMatrix();
+
+
+	//left fence
+	glPushMatrix();
+  glTranslatef(-49.5,-0,-38.5);
+	glRotatef(-90,0,1,0);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+  glTranslatef(-49.5,0,-19.5);
+	glRotatef(-90,0,1,0);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-49.5,0,-0.5);
+  glRotatef(-90,0,1,0);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+  glTranslatef(-49.5,0,18.5);
+	glRotatef(-90,0,1,0);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+  glTranslatef(-49.5,0,37.5);
+	glRotatef(-90,0,1,0);
+	fence();
+	glPopMatrix();
+
+  glPushMatrix();
+  glTranslatef(-49.5,0,46.5);
+  glScalef(0.1,3,0.4);
+	picket();
+	glPopMatrix();
+
+  glPushMatrix();
+  glTranslatef(-49.5,0,47.5);
+  glScalef(0.1,3,0.4);
+	picket();
+	glPopMatrix();
+
+  glPushMatrix();
+  glTranslatef(-49.5,0,48.5);
+  glScalef(0.1,3,0.4);
+	picket();
+	glPopMatrix();
+
+  glPushMatrix();
+  glTranslatef(-49.5,0,49);
+  glScalef(0.1,3,0.4);
+	picket();
+	glPopMatrix();
+
+  //lower fence
+	glPushMatrix();
+  glTranslatef(-49.5,-2,60);
+	glRotatef(-90,0,1,0);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+  glTranslatef(-49.5,-2,79);
+	glRotatef(-90,0,1,0);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+  glTranslatef(-49.5,-2,98);
+	glRotatef(-90,0,1,0);
+	fence();
+	glPopMatrix();
+
+  //backfence
+	glPushMatrix();
+	glTranslatef(-38,-2,106.5);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-19,-2,106.5);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-0,-2,106.5);
+	fence();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(19,-2,106.5);
+	fence();
+	glPopMatrix();
+
+
+	//road
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(120,-5,0);
+	road();
+	glPopMatrix();
+
+	//road
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(-100,-5,0);
+	road();
+	glPopMatrix();
+
+	//seawall
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(140,0,0);
+	seawall();
+	glPopMatrix();
+
+	//stand
+	glPushMatrix();
+	glColor3f(1,1,1);
+  glTranslatef(0,4,0);
+	glScalef(4,4,4);
+  glRotatef(180,0,1,0);
+	stand();
+	glPopMatrix();
+
+	//pedestal
+	glPushMatrix();
+	glColor3f(1,1,1);
+  glTranslatef(0,-0.5,0);
+	glScalef(7,0.5,7);
+  pedestal();
+	glPopMatrix();
+
+	//circleplatform
+	glPushMatrix();
+	glColor3f(1,1,1);
+  glTranslatef(0,-1,0);
+	glScalef(2,1,2);
+	glRotatef(90,1,0,0);
+	circleplatform();
+	glPopMatrix();
+
+  //tile
+  glPushMatrix();
+  glColor3f(1,1,1);
+  glTranslatef(0,-2.5,0);
+  glScalef(1.0, 1.0, 1.0);
+  glRotatef(90,1, 0, 0);
+  tile();
+  glPopMatrix();
+
+	//walkway stone
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(55,-3.5,11);
+	glScalef(1,1.5,1);
+	walkway();
+	glPopMatrix();
+
+	//walkway stone
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(95,-3.5,-11);
+	glScalef(1,1.5,1);
+  glRotatef(180,0,1,0);
+	walkway();
+	glPopMatrix();
+
+	//bench
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(-40,-2.5,0);
+	glRotatef(90,0,1,0);
+	bench();
+	glPopMatrix();
+
+	//bench
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(40,-2.5,0);
+	glRotatef(90,0,1,0);
+	bench();
+	glPopMatrix();
+
+	//bench
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(35,-2.5,20);
+	glRotatef(45,0,1,0);
+	bench();
+	glPopMatrix();
+
+	//bench
+	glPushMatrix();
+	glColor3f(1,1,1);
+	glTranslatef(35,-2.5 ,-20);
+	glRotatef(-45,0,1,0);
+	bench();
+	glPopMatrix();
+
+  //guardhut
+  glPushMatrix();
+  glColor3f(1,1,1);
+  glTranslatef(80,0,-35);
+  glScalef(6,5,6);
+  guardhut();
+  glPopMatrix();
+
+  //sign
+  glPushMatrix();
+  glColor3f(1,1,1);
+  glTranslatef(60,0,20);
+  sign();
+  glPopMatrix();
+
   //Shadowing
   findPlane(floorPlane, floorVertices[1], floorVertices[2], floorVertices[3]);
   shadowMatrix(floorShadow, floorPlane, lightPosition);
 
-  glStencilFunc(GL_LESS, 3, 0xffffffff);  /* draw if ==1 */
+  glStencilFunc(GL_LESS, 2, 0xffffffff);  /* draw if ==1 */
   glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glDisable(GL_FOG);
   glDisable(GL_LIGHTING);  /* Force the 50% black. */
+  glDisable(GL_LIGHT0);
   glColor4f(0.0, 0.0, 0.0, 0.5);
 
   glEnable(GL_POLYGON_OFFSET_FILL);
-  glPolygonOffset(1.0, 1.0);
+  glPolygonOffset(-1.0, -1.0);
 
   //platform
 	glPushMatrix();
   glColor4f(0.0, 0.0, 0.0, 0.5);
+  glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
   glMultMatrixf((GLfloat *) floorShadow);
 	glTranslatef(0,-4.0,0);
   glScalef (50.0, 1.0, 50.0);
-  glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 	platform();
-  glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
 	glPopMatrix();
 
   //walkway platform shadow
   glPushMatrix();
   glColor4f(0.0, 0.0, 0.0, 0.5);
+  glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
   glMultMatrixf((GLfloat *) floorShadow);
   glTranslatef(80,-4.0,0);
   glScalef(30.0, 1.0, 10.0);
-  glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
   platform();
   glPopMatrix();
 
   //guardhut
   glPushMatrix();
   glColor4f(0.0, 0.0, 0.0, 0.5);
+  glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
   glMultMatrixf((GLfloat *) floorShadow);
   glTranslatef(80,0,-35);
   glScalef(6,5,6);
@@ -193,7 +508,8 @@ void display(){
 
   //sign
   glPushMatrix();
-  glColor4f(0.0, 0.0, 0.0, 0.5);
+  glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
+  glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
   glMultMatrixf((GLfloat *) floorShadow);
   glTranslatef(60,0,20);
   sign();
@@ -202,14 +518,16 @@ void display(){
   //seawall shadow
   glPushMatrix();
   glColor4f(0.0, 0.0, 0.0, 0.5);
+  glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
   glMultMatrixf((GLfloat *) floorShadow);
-  glTranslatef(150,0,0);
+  glTranslatef(140,0,0);
   seawall();
   glPopMatrix();
 
   //walkway stone
   glPushMatrix();
   glColor4f(0.0, 0.0, 0.0, 0.5);
+  glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
   glMultMatrixf((GLfloat *) floorShadow);
   glTranslatef(55,-3,11);
   glScalef(1,2,1);
@@ -219,6 +537,7 @@ void display(){
   //walkway stone
   glPushMatrix();
   glColor4f(0.0, 0.0, 0.0, 0.5);
+  glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
   glMultMatrixf((GLfloat *) floorShadow);
   glTranslatef(95,-3,-11);
   glScalef(1,2,1);
@@ -229,6 +548,7 @@ void display(){
   //lower fence
 	glPushMatrix();
   glColor4f(0.0, 0.0, 0.0, 0.5);
+  glPolygonMode (GL_FRONT, GL_FILL);
   glMultMatrixf((GLfloat *) floorShadow);
   glTranslatef(-49.5,-2,60);
 	glRotatef(-90,0,1,0);
@@ -448,312 +768,21 @@ void display(){
 	stand();
 	glPopMatrix();
 
-	//stone shadow
+	//pedestal shadow
 	glPushMatrix();
   glColor4f(0.0, 0.0, 0.0, 0.5);
   glMultMatrixf((GLfloat *) floorShadow);
   glTranslatef(0,-0.5,0);
 	glScalef(7,0.5,7);
-	stone();
+  pedestal();
 	glPopMatrix();
 
+  glDisable(GL_POLYGON_OFFSET_FILL);
   glDisable(GL_BLEND);
-  glEnable(GL_LIGHTING);
   glDisable(GL_STENCIL_TEST);
-
-
-	//LIGHTING
-	GLfloat ambientColor[] = {3.5f, 3.5f, 3.5f, 1.0f};
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-
-	//add positioned lighting
-	GLfloat lightColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
-	glLightfv(GL_LIGHT0, GL_POSITION,lightPosition);
-
-  //Fogging
-	GLfloat fogColor[] = { 0.5f, 0.5f, 0.5f ,0.1 };
-	glFogfv(GL_FOG_COLOR, fogColor);
-	glFogi(GL_FOG_MODE, GL_LINEAR);
-	glFogf(GL_FOG_START, 10.0f);
-	glFogf(GL_FOG_END, 1800.0f);
-
-	//skybox
-	glPushMatrix();
-	glColor3f(1,1,1);
-	glScalef (1000.0, 1000.0, 1000.0);
-	SkyFrameWork();
-	glPopMatrix();
-
-	//ground
-	glPushMatrix();
-	glColor3f(1,1,1);
-	ground();
-	glPopMatrix();
-
-	//platform
-	glPushMatrix();
-	glColor3f(1,1,1);
-	glTranslatef(0,-4.0,0);
-  glScalef (50.0, 1.0, 50.0);
-	platform();
-	glPopMatrix();
-
-	//walkway platform
-	glPushMatrix();
-	glColor3f(1,1,1);
-  glTranslatef(80,-4.0,0);
-	glScalef(30.0, 1.0, 10.0);
-	platform();
-	glPopMatrix();
-
-	//front fence
-	glPushMatrix();
-  glTranslatef(-41,0,-50);
-	glRotatef(180,0,1,0);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-  glTranslatef(-22,0,-50);
-	glRotatef(180,0,1,0);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-  glTranslatef(-3,0,-50);
-	glRotatef(180,0,1,0);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-  glTranslatef(16,0,-50);
-	glRotatef(180,0,1,0);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-  glTranslatef(35,0,-50);
-	glRotatef(180,0,1,0);
-	fence();
-	glPopMatrix();
-
-
-	//left fence
-	glPushMatrix();
-  glTranslatef(-49.5,-0,-38.5);
-	glRotatef(-90,0,1,0);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-  glTranslatef(-49.5,0,-19.5);
-	glRotatef(-90,0,1,0);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(-49.5,0,-0.5);
-  glRotatef(-90,0,1,0);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-  glTranslatef(-49.5,0,18.5);
-	glRotatef(-90,0,1,0);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-  glTranslatef(-49.5,0,37.5);
-	glRotatef(-90,0,1,0);
-	fence();
-	glPopMatrix();
-
-  glPushMatrix();
-  glTranslatef(-49.5,0,46.5);
-  glScalef(0.1,3,0.4);
-	picket();
-	glPopMatrix();
-
-  glPushMatrix();
-  glTranslatef(-49.5,0,47.5);
-  glScalef(0.1,3,0.4);
-	picket();
-	glPopMatrix();
-
-  glPushMatrix();
-  glTranslatef(-49.5,0,48.5);
-  glScalef(0.1,3,0.4);
-	picket();
-	glPopMatrix();
-
-  glPushMatrix();
-  glTranslatef(-49.5,0,49);
-  glScalef(0.1,3,0.4);
-	picket();
-	glPopMatrix();
-
-  //lower fence
-	glPushMatrix();
-  glTranslatef(-49.5,-2,60);
-	glRotatef(-90,0,1,0);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-  glTranslatef(-49.5,-2,79);
-	glRotatef(-90,0,1,0);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-  glTranslatef(-49.5,-2,98);
-	glRotatef(-90,0,1,0);
-	fence();
-	glPopMatrix();
-
-  //backfence
-	glPushMatrix();
-	glTranslatef(-38,-2,106.5);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(-19,-2,106.5);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(-0,-2,106.5);
-	fence();
-	glPopMatrix();
-
-	glPushMatrix();
-	glTranslatef(19,-2,106.5);
-	fence();
-	glPopMatrix();
-
-
-	//road
-	glPushMatrix();
-	glColor3f(1,1,1);
-	glTranslatef(120,-5,0);
-	road();
-	glPopMatrix();
-
-	//road
-	glPushMatrix();
-	glColor3f(1,1,1);
-	glTranslatef(-100,-5,0);
-	road();
-	glPopMatrix();
-
-	//seawall
-	glPushMatrix();
-	glColor3f(1,1,1);
-	glTranslatef(150,0,0);
-	seawall();
-	glPopMatrix();
-
-	//stand
-	glPushMatrix();
-	glColor3f(1,1,1);
-  glTranslatef(0,4,0);
-	glScalef(4,4,4);
-  glRotatef(180,0,1,0);
-	stand();
-	glPopMatrix();
-
-	//stone
-	glPushMatrix();
-	glColor3f(1,1,1);
-  glTranslatef(0,-0.5,0);
-	glScalef(7,0.5,7);
-	stone();
-	glPopMatrix();
-
-	//circleplatform
-	glPushMatrix();
-	glColor3f(1,1,1);
-  glTranslatef(0,-1,0);
-	glScalef(2,1,2);
-	glRotatef(90,1,0,0);
-	circleplatform();
-	glPopMatrix();
-
-  //tile
-  glPushMatrix();
-  glColor3f(1,1,1);
-  glTranslatef(0,-2.5,0);
-  glScalef(1.0, 1.0, 1.0);
-  glRotatef(90,1, 0, 0);
-  tile();
-  glPopMatrix();
-
-	//walkway stone
-	glPushMatrix();
-	glColor3f(1,1,1);
-	glTranslatef(55,-3.5,11);
-	glScalef(1,1.5,1);
-	walkway();
-	glPopMatrix();
-
-	//walkway stone
-	glPushMatrix();
-	glColor3f(1,1,1);
-	glTranslatef(95,-3.5,-11);
-	glScalef(1,1.5,1);
-  glRotatef(180,0,1,0);
-	walkway();
-	glPopMatrix();
-
-	//bench
-	glPushMatrix();
-	glColor3f(1,1,1);
-	glTranslatef(-40,-2.5,0);
-	glRotatef(90,0,1,0);
-	bench();
-	glPopMatrix();
-
-	//bench
-	glPushMatrix();
-	glColor3f(1,1,1);
-	glTranslatef(40,-2.5,0);
-	glRotatef(90,0,1,0);
-	bench();
-	glPopMatrix();
-
-	//bench
-	glPushMatrix();
-	glColor3f(1,1,1);
-	glTranslatef(35,-2.5,20);
-	glRotatef(45,0,1,0);
-	bench();
-	glPopMatrix();
-
-	//bench
-	glPushMatrix();
-	glColor3f(1,1,1);
-	glTranslatef(35,-2.5 ,-20);
-	glRotatef(-45,0,1,0);
-	bench();
-	glPopMatrix();
-
-  //guardhut
-  glPushMatrix();
-  glColor3f(1,1,1);
-  glTranslatef(80,0,-35);
-  glScalef(6,5,6);
-  guardhut();
-  glPopMatrix();
-
-  //sign
-  glPushMatrix();
-  glColor3f(1,1,1);
-  glTranslatef(60,0,20);
-  sign();
-  glPopMatrix();
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+  glEnable(GL_FOG);
 
 	glutSwapBuffers();
 }
@@ -893,4 +922,5 @@ void findPlane(GLfloat plane[4], GLfloat v0[3], GLfloat v1[3], GLfloat v2[3]){
   plane[C] = vec0[X] * vec1[Y] - vec0[Y] * vec1[X];
 
   plane[D] = -(plane[A] * v0[X] + plane[B] * v0[Y] + plane[C] * v0[Z]);
+
 }
