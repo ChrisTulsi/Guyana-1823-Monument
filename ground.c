@@ -23,6 +23,7 @@ void ground(){
 	glBindTexture(GL_TEXTURE_2D, groundtexture);
 	glBegin(GL_QUADS);
 			glNormal3f(0,1,0);
+			glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mColor);
 			glTexCoord2f(0.0, 0.0f); glVertex3f(-1000, -5.01, 1000);
 			glTexCoord2f(500.0f, 0.0f); glVertex3f(-1000, -5.01, -1000);
 			glTexCoord2f(500.0f, 500.0f); glVertex3f(1000, -5.01, -1000);

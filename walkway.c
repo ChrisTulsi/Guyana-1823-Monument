@@ -14,7 +14,6 @@
 void walkway(){
 
 	glPushMatrix();
-	glColor3f(1,1,1);
 	stand();
 	glPopMatrix();
 

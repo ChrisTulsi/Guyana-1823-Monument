@@ -20,6 +20,7 @@ void circleplatform(){
 	// Enable/Disable features
 	glPushAttrib(GL_ENABLE_BIT);
 	glEnable(GL_TEXTURE_2D);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mColor);
   GLUquadricObj *quadratic;
   quadratic=gluNewQuadric();			// Create A Pointer To The Quadric Object ( NEW )
   gluQuadricNormals(quadratic, GLU_SMOOTH);	// Create Smooth Normals ( NEW )

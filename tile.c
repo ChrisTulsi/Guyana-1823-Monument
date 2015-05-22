@@ -20,6 +20,7 @@ void tile(){
 	// Enable/Disable features
 	glPushAttrib(GL_ENABLE_BIT);
 	glEnable(GL_TEXTURE_2D);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mColor);
   glBindTexture(GL_TEXTURE_2D, tiletexture);
   GLUquadricObj *quadratic;
   quadratic=gluNewQuadric();			// Create A Pointer To The Quadric Object ( NEW )

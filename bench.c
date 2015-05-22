@@ -25,6 +25,7 @@ void benchcube(){
 	glBindTexture(GL_TEXTURE_2D, benchtexture);
 	glBegin(GL_QUADS);
       glNormal3f(0,0,1);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mColor);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1, -1, 1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1, 1, 1);
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(1, 1, 1);
@@ -35,6 +36,7 @@ void benchcube(){
 	glBindTexture(GL_TEXTURE_2D, benchtexture);
 	glBegin(GL_QUADS);
       glNormal3f(0,0,-1);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mColor);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(1, -1, -1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, -1);
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1, 1, -1);
@@ -45,6 +47,7 @@ void benchcube(){
 	glBindTexture(GL_TEXTURE_2D, benchtexture);
 	glBegin(GL_QUADS);
       glNormal3f(0,-1,0);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mColor);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(1, -1, -1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(1, -1, 1);
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1, -1, 1);
@@ -55,6 +58,7 @@ void benchcube(){
 	glBindTexture(GL_TEXTURE_2D, benchtexture);
 	glBegin(GL_QUADS);
       glNormal3f(0,1,0);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mColor);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1, 1, 1);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1, 1, -1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, -1);
@@ -65,6 +69,7 @@ void benchcube(){
 	glBindTexture(GL_TEXTURE_2D, benchtexture);
 	glBegin(GL_QUADS);
       glNormal3f(-1,0,0);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mColor);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1, 1, -1);
 			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1, 1, 1);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1, -1, 1);
@@ -75,6 +80,7 @@ void benchcube(){
 	glBindTexture(GL_TEXTURE_2D, benchtexture);
 	glBegin(GL_QUADS);
       glNormal3f(1,0,0);
+      glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mColor);
 			glTexCoord2f(0.0f, 0.0f); glVertex3f(1, -1, -1);
 			glTexCoord2f(1.0f, 0.0f); glVertex3f(1, -1, 1);
 			glTexCoord2f(1.0f, 1.0f); glVertex3f(1, 1, 1);
@@ -91,19 +97,20 @@ void benchcube(){
 void bench(){
   //top
   glPushMatrix();
+  glTranslatef(0,1,0);
   glScalef(4,0.5,1);
   benchcube();
   glPopMatrix();
   //left
   glPushMatrix();
-  glScalef(0.5,1,1);
-  glTranslatef(-4.5,-1.5,0);
+  glTranslatef(-3.0,0,0);
+  glScalef(0.5,0.5,1);
   benchcube();
   glPopMatrix();
   //right
   glPushMatrix();
-  glScalef(0.5,1,1);
-  glTranslatef(4.5,-1.5,0);
+  glTranslatef(3.0,0,0);
+  glScalef(0.5,0.5,1);
   benchcube();
   glPopMatrix();
 

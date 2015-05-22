@@ -23,6 +23,7 @@ void road(){
 	glBindTexture(GL_TEXTURE_2D, roadtexture);
 	glBegin(GL_QUADS);
 			glNormal3f(0,1,0);
+			glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mColor);
 			glTexCoord2f(0.0, 0.0f); glVertex3f(-10, 1, 1000);
 			glTexCoord2f(500.0f, 0.0f); glVertex3f(-10, 1, -1000);
 			glTexCoord2f(500.0f, 20.0f); glVertex3f(10, 1, -1000);
