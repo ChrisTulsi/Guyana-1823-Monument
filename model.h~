@@ -2,10 +2,10 @@
 #define _BLENDER_EXPORT_H_
 
 #define OBJECTS_COUNT 33
-#define DESKTOP:HIGHPOLYEYES 0
-#define DESKTOP:MHAIR02 1
-#define DESKTOP:PROXY741 2
-#define DESKTOP:BODY 3
+#define HIGHPOLYEYES 0
+#define MHAIR02 1
+#define PROXY741 2
+#define BODY 3
 #define GZM_CIRCLEHIPS 4
 #define GZM_FACEHEAD 5
 #define GZM_TONGUE 6

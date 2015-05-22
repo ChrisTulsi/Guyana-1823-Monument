@@ -6,6 +6,8 @@
 #include <math.h>
 #include <GL/glext.h>
 
+#define BUFFER_OFFSET(x)((char *)NULL+(x))
+
 #include "texture.h"
 #include "skybox.h"
 #include "fence.h"
@@ -22,6 +24,7 @@
 #include "sign.h"
 #include "pedestal.h"
 #include "water.h"
+#include "model.h"
 
 
 void display();									//displays/ renders to screen
@@ -360,21 +363,21 @@ void display(){
 	seawall();
 	glPopMatrix();
 
-	//stand
+	//pedestal
 	glPushMatrix();
 	glColor3f(1,1,1);
   glTranslatef(0,4,0);
 	glScalef(4,4,4);
   glRotatef(180,0,1,0);
-	stand();
+	pedestal();
 	glPopMatrix();
 
-	//pedestal
+	//stone
 	glPushMatrix();
 	glColor3f(1,1,1);
   glTranslatef(0,-0.5,0);
 	glScalef(7,0.5,7);
-  pedestal();
+  stone();
 	glPopMatrix();
 
 	//circleplatform
@@ -459,6 +462,45 @@ void display(){
   sign();
   glPopMatrix();
 
+  glPushMatrix();
+  glColor3f(1.0f, 0.0f, 0.0f);
+
+  glGenBuffers(1, &vbo);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(struct vertex_struct) * 1064 *4 , vertices, GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  glGenBuffers(1, &vinx);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vinx);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexes[0]) * 7*2040 * 3 , indexes, GL_STATIC_DRAW);
+
+  glTranslatef(0,8,0);
+  glRotatef(-90,1,0,0);
+  glColor3f(1.0f, 0.0f, 0.0f);
+
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vinx);
+
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glVertexPointer(3, GL_FLOAT, sizeof (struct vertex_struct), BUFFER_OFFSET(0));
+
+  glEnableClientState(GL_NORMAL_ARRAY);
+  glNormalPointer(GL_FLOAT, sizeof (struct vertex_struct), BUFFER_OFFSET(3 * sizeof (float)));
+
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glTexCoordPointer(2, GL_FLOAT, sizeof (struct vertex_struct), BUFFER_OFFSET(6 * sizeof(float)));
+
+  glDrawElements(GL_TRIANGLES,  7*2040 * 3, INX_TYPE, BUFFER_OFFSET(0));
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glDisableClientState(GL_NORMAL_ARRAY);
+  glDisableClientState(GL_VERTEX_ARRAY);
+  glPopMatrix();
+
+
   //Shadowing
   findPlane(floorPlane, floorVertices[1], floorVertices[2], floorVertices[3]);
   shadowMatrix(floorShadow, floorPlane, lightPosition);
@@ -506,10 +548,10 @@ void display(){
   guardhut();
   glPopMatrix();
 
-  //sign
+  //sign shadow
   glPushMatrix();
   glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
-  glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+  //glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
   glMultMatrixf((GLfloat *) floorShadow);
   glTranslatef(60,0,20);
   sign();
@@ -753,7 +795,6 @@ void display(){
   glRotatef(-45,0,1,0);
   bench();
   glPopMatrix();
-
 
   findPlane(floorPlane, floorVertices3[1], floorVertices3[2], floorVertices3[3]);
   shadowMatrix(floorShadow, floorPlane, lightPosition);
