@@ -40,7 +40,7 @@ void findPlane(GLfloat plane[4], GLfloat v0[3], GLfloat v1[3], GLfloat v2[3]);
 
 float angle = 0.0f, angle1 = 0.0f;
 float lx = 0.0f, ly = 0.0f, lz = -1.0f;
-float x = 0.0f, y = 3.0f ,z = 20.0f ;
+float x = 0.0f, y = 3.0f ,z = 45.0f ;
 
 GLfloat floorPlane[4];
 GLfloat floorShadow[4][4];
